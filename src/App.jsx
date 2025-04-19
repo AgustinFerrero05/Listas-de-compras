@@ -40,6 +40,12 @@ function App() {
     setLists(updatedLists);
   };
 
+  const editItem = (index, newName) => {
+    const updatedLists = [...lists];
+    updatedLists[selectedListIndex].items[index].name = newName;
+    setLists(updatedLists);
+  };
+
   const addNewList = () => {
     if (!newListName) return;
     setLists([...lists, { name: newListName, color: newListColor, items: [] }]);
@@ -66,7 +72,6 @@ function App() {
     <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
       <h1>📒Mis listas</h1>
 
-      {/* List Tabs */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
         {lists.map((list, index) => (
           <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -110,27 +115,24 @@ function App() {
             )}
           </div>
         ))}
+        <div>
+          <input
+            type="text"
+            placeholder="Nombre de nueva lista"
+            value={newListName}
+            onChange={(e) => setNewListName(e.target.value)}
+            style={{ marginRight: '0.5rem' }}
+          />
+          <input
+            type="color"
+            value={newListColor}
+            onChange={(e) => setNewListColor(e.target.value)}
+            style={{ marginRight: '0.5rem' }}
+          />
+          <button onClick={addNewList}>➕</button>
+        </div>
       </div>
 
-      {/* Add New List */}
-      <div style={{ marginBottom: '2rem' }}>
-        <input
-          type="text"
-          placeholder="Nombre de nueva lista"
-          value={newListName}
-          onChange={(e) => setNewListName(e.target.value)}
-          style={{ marginRight: '0.5rem' }}
-        />
-        <input
-          type="color"
-          value={newListColor}
-          onChange={(e) => setNewListColor(e.target.value)}
-          style={{ marginRight: '0.5rem' }}
-        />
-        <button onClick={addNewList}>➕ Agregar lista</button>
-      </div>
-
-      {/* Current List Display */}
       <div style={{ backgroundColor: currentList.color, padding: '1rem', borderRadius: '8px' }}>
         <h2>{currentList.name}</h2>
         <ShoppingInput addItem={addItem} />
@@ -138,6 +140,7 @@ function App() {
           items={currentList.items}
           deleteItem={deleteItem}
           toggleItem={toggleItem}
+          editItem={editItem}
         />
       </div>
     </div>
